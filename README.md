@@ -1,8 +1,15 @@
-# DevArchitect
+# 🛡️ DevArchitect — Engineering Intelligence & Architectural Guardrails
 
 > **Understand your codebase. Improve its architecture. Engineer with confidence.**
 
-DevArchitect is an engineering intelligence platform that automatically maps a software repository, evaluates its architecture, identifies technical debt, predicts the change blast radius of modifications, and helps engineering teams evolve their codebases safely.
+[![npm version](https://img.shields.io/npm/v/devarchitect-cli.svg?style=flat-square&color=blue&label=npm%20cli)](https://www.npmjs.com/package/devarchitect-cli)
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/devarchitect.devarchitect.svg?style=flat-square&color=blue&label=VS%20Code%20Extension)](https://marketplace.visualstudio.com/items?itemName=devarchitect.devarchitect)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](https://github.com/Addy3131/devarchitect/blob/main/LICENSE)
+[![Tests](https://img.shields.io/badge/tests-37%20passed-brightgreen.svg?style=flat-square)](https://github.com/Addy3131/devarchitect)
+[![CLI Size](https://img.shields.io/badge/cli%20bundle-68%20KB-success.svg?style=flat-square)](https://bundlephobia.com/package/devarchitect-cli)
+[![GitHub Stars](https://img.shields.io/github/stars/Addy3131/devarchitect?style=flat-square&color=yellow)](https://github.com/Addy3131/devarchitect)
+
+DevArchitect is an engineering intelligence platform that automatically maps software repositories, calculates transparent code health, prevents technical debt with the **Architecture Debt Ratchet**, and predicts change blast radius before code merges. Available as a **high-performance CLI on npm** and a **real-time extension for VS Code & Cursor**.
 
 ---
 

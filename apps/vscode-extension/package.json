@@ -1,14 +1,35 @@
 {
-  "name": "vscode-devarchitect",
-  "displayName": "DevArchitect — Engineering Intelligence",
-  "description": "Real-time architecture health, change blast radius, and boundary enforcement inside VS Code and Cursor",
-  "version": "0.1.2",
+  "name": "devarchitect",
+  "displayName": "DevArchitect",
+  "description": "Understand your codebase. Prevent architectural drift. Real-time architecture health, change blast radius, and interactive studio inside VS Code and Cursor",
+  "version": "0.1.3",
   "publisher": "devarchitect",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Addy3131/devarchitect.git"
   },
+  "homepage": "https://github.com/Addy3131/devarchitect#readme",
+  "bugs": {
+    "url": "https://github.com/Addy3131/devarchitect/issues"
+  },
+  "icon": "resources/icon.png",
+  "galleryBanner": {
+    "color": "#0f172a",
+    "theme": "dark"
+  },
+  "badges": [
+    {
+      "url": "https://img.shields.io/npm/v/devarchitect-cli.svg?style=flat-square&color=blue&label=npm%20cli",
+      "href": "https://www.npmjs.com/package/devarchitect-cli",
+      "description": "NPM CLI"
+    },
+    {
+      "url": "https://img.shields.io/badge/license-MIT-green.svg?style=flat-square",
+      "href": "https://github.com/Addy3131/devarchitect/blob/main/LICENSE",
+      "description": "License"
+    }
+  ],
   "engines": {
     "vscode": "^1.85.0"
   },
