@@ -49,8 +49,14 @@ devarchitect/
 You can run DevArchitect directly on any repository without cloning or installing:
 
 ```bash
-npx devarchitect health
-npx devarchitect studio
+# Run on any project instantly
+npx devarchitect-cli health
+npx devarchitect-cli studio
+npx devarchitect-cli validate
+
+# Or install globally
+npm install -g devarchitect-cli
+devarchitect health
 ```
 
 ### Local Workspace Setup
