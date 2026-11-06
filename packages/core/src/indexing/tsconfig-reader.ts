@@ -17,6 +17,24 @@ export function readTypeScriptConfig(rootDir: string): TypeScriptConfigInfo {
   }
 
   if (!configPath) {
+    try {
+      const entries = fs.readdirSync(rootDir, { withFileTypes: true });
+      const ignoreDirs = new Set(['node_modules', '.git', '.next', 'dist', 'build', 'out', '.turbo', '.vscode', '.agents', '.claude', '.devarchitect']);
+      for (const entry of entries) {
+        if (entry.isDirectory() && !ignoreDirs.has(entry.name)) {
+          const subTs = path.join(rootDir, entry.name, 'tsconfig.json');
+          if (fs.existsSync(subTs)) {
+            configPath = subTs;
+            break;
+          }
+        }
+      }
+    } catch {
+      // Ignore reading errors
+    }
+  }
+
+  if (!configPath) {
     return {
       exists: false,
       pathAliases: [],

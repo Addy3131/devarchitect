@@ -2,7 +2,7 @@
   "name": "vscode-devarchitect",
   "displayName": "DevArchitect — Engineering Intelligence",
   "description": "Real-time architecture health, change blast radius, and boundary enforcement inside VS Code and Cursor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "devarchitect",
   "license": "MIT",
   "repository": {
@@ -34,14 +34,29 @@
   "contributes": {
     "commands": [
       {
+        "command": "devarchitect.openStudioWebview",
+        "title": "DevArchitect: Open Architecture Graph in Editor",
+        "icon": "$(graph)"
+      },
+      {
         "command": "devarchitect.launchStudio",
-        "title": "DevArchitect: Open Interactive Web Studio",
+        "title": "DevArchitect: Open Web Studio (Browser)",
         "icon": "$(globe)"
       },
       {
         "command": "devarchitect.healthCheck",
-        "title": "DevArchitect: Run Codebase Health Check",
-        "icon": "$(pulse)"
+        "title": "DevArchitect: Refresh Architecture Health",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "devarchitect.refreshBlastRadius",
+        "title": "DevArchitect: Refresh Active File Blast Radius",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "devarchitect.selectProjectRoot",
+        "title": "DevArchitect: Select Target Project Folder",
+        "icon": "$(folder)"
       },
       {
         "command": "devarchitect.inspectCurrentFile",
@@ -64,6 +79,30 @@
         "icon": "$(tools)"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "devarchitect.openStudioWebview",
+          "when": "view == devarchitect.healthView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "devarchitect.selectProjectRoot",
+          "when": "view == devarchitect.healthView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "devarchitect.healthCheck",
+          "when": "view == devarchitect.healthView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "devarchitect.refreshBlastRadius",
+          "when": "view == devarchitect.blastView",
+          "group": "navigation@1"
+        }
+      ]
+    },
     "viewsContainers": {
       "activitybar": [
         {

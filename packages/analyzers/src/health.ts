@@ -16,7 +16,69 @@ export interface HealthCalculationInput {
 export function calculateProjectHealth(input: HealthCalculationInput): ProjectHealthScore {
   const { nodes, issues, graph, hasTests, duplicateBlockCount = 0 } = input;
 
-  const totalFiles = nodes.length || 1;
+  if (nodes.length === 0) {
+    return {
+      status: 'critical',
+      overallScore: 0,
+      grade: 'F',
+      dimensions: {
+        architecture: {
+          score: 0,
+          status: 'critical',
+          weight: 0.25,
+          issueCount: 0,
+          summary: 'No source files detected in workspace.',
+        },
+        complexity: {
+          score: 0,
+          status: 'critical',
+          weight: 0.20,
+          issueCount: 0,
+          summary: 'No source files detected in workspace.',
+        },
+        dependencies: {
+          score: 0,
+          status: 'critical',
+          weight: 0.15,
+          issueCount: 0,
+          summary: 'No source files detected in workspace.',
+        },
+        duplication: {
+          score: 0,
+          status: 'critical',
+          weight: 0.15,
+          issueCount: 0,
+          summary: 'No source files detected in workspace.',
+        },
+        maintainability: {
+          score: 0,
+          status: 'critical',
+          weight: 0.15,
+          issueCount: 0,
+          summary: 'No source files detected in workspace.',
+        },
+        testing: {
+          score: null,
+          status: 'unmeasured',
+          weight: 0.10,
+          issueCount: 0,
+          summary: 'No source files detected.',
+        },
+      },
+      metrics: {
+        totalIssues: 0,
+        errorCount: 0,
+        warningCount: 0,
+        infoCount: 0,
+        circularDependencies: 0,
+        highComplexityCount: 0,
+        duplicateBlocksCount: 0,
+      },
+      evaluatedAt: new Date().toISOString(),
+    };
+  }
+
+  const totalFiles = nodes.length;
   const errorCount = issues.filter(i => i.severity === 'error').length;
   const warningCount = issues.filter(i => i.severity === 'warning').length;
   const circularCount = issues.filter(i => i.ruleId === 'no-circular-dependencies').length;

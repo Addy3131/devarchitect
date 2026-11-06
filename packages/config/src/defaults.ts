@@ -11,6 +11,7 @@ export const DEFAULT_CONFIG: DevArchitectConfig = {
   analysis: {
     incremental: true,
     include: [
+      '**/*.{ts,tsx,js,jsx}',
       'src/**',
       'app/**',
       'pages/**',
@@ -22,6 +23,15 @@ export const DEFAULT_CONFIG: DevArchitectConfig = {
       'hooks/**',
       'packages/**',
       'apps/**',
+      '**/src/**',
+      '**/app/**',
+      '**/pages/**',
+      '**/lib/**',
+      '**/components/**',
+      '**/features/**',
+      '**/modules/**',
+      '**/services/**',
+      '**/hooks/**',
       'tests/**',
       '__tests__/**'
     ],

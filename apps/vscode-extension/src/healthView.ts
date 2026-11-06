@@ -3,7 +3,14 @@ import path from 'node:path';
 import { ProjectHealthScore, ArchitectureIssue } from '@devarchitect/contracts';
 import { ArchitectureGraph } from '@devarchitect/graph';
 
-export type HealthTreeItemType = 'summary' | 'dimension' | 'violations_group' | 'issue' | 'placeholder';
+export type HealthTreeItemType =
+  | 'scope'
+  | 'summary'
+  | 'dimension'
+  | 'violations_group'
+  | 'issue'
+  | 'placeholder'
+  | 'warning';
 
 export class DevArchitectTreeItem extends vscode.TreeItem {
   constructor(
@@ -29,11 +36,14 @@ export class ArchitectureHealthTreeProvider implements vscode.TreeDataProvider<D
   private health: ProjectHealthScore | null = null;
   private issues: ArchitectureIssue[] = [];
   private rootDir: string = '';
+  private targetDir: string = '';
+  private totalNodes: number = 0;
   private isLoading: boolean = false;
   private hasWorkspace: boolean = true;
 
-  public setRootDir(rootDir: string) {
+  public setRootDir(rootDir: string, targetDir?: string) {
     this.rootDir = rootDir;
+    this.targetDir = targetDir || rootDir;
     this.hasWorkspace = true;
   }
 
@@ -48,11 +58,16 @@ export class ArchitectureHealthTreeProvider implements vscode.TreeDataProvider<D
     this._onDidChangeTreeData.fire();
   }
 
-  public update(health: ProjectHealthScore, issues: ArchitectureIssue[]) {
+  public update(health: ProjectHealthScore, issues: ArchitectureIssue[], totalNodes: number = 0) {
     this.health = health;
     this.issues = issues;
+    this.totalNodes = totalNodes;
     this.isLoading = false;
     this.hasWorkspace = true;
+    this._onDidChangeTreeData.fire();
+  }
+
+  public refresh() {
     this._onDidChangeTreeData.fire();
   }
 
@@ -83,23 +98,70 @@ export class ArchitectureHealthTreeProvider implements vscode.TreeDataProvider<D
       ]);
     }
 
-    if (!this.health) {
-      const item = new DevArchitectTreeItem(
-        'Click to evaluate codebase health',
-        vscode.TreeItemCollapsibleState.None,
-        'placeholder',
-        'play'
-      );
-      item.command = {
-        command: 'devarchitect.healthCheck',
-        title: 'Evaluate Health',
-      };
-      return Promise.resolve([item]);
-    }
-
     // Root level items
     if (!element) {
-      const items: DevArchitectTreeItem[] = [
+      const items: DevArchitectTreeItem[] = [];
+
+      // 1. Current Target Folder Scope Item
+      const activeFolder = path.basename(this.targetDir || this.rootDir) || 'Workspace';
+      const scopeItem = new DevArchitectTreeItem(
+        `Scope: ${activeFolder} (${this.totalNodes} file${this.totalNodes === 1 ? '' : 's'})`,
+        vscode.TreeItemCollapsibleState.None,
+        'scope',
+        'folder-opened'
+      );
+      scopeItem.tooltip = `Current analysis root: ${this.targetDir || this.rootDir}. Click to switch target subfolder.`;
+      scopeItem.command = {
+        command: 'devarchitect.selectProjectRoot',
+        title: 'Switch Target Subfolder',
+      };
+      items.push(scopeItem);
+
+      // 2. If 0 nodes found, guide the user directly
+      if (this.totalNodes === 0) {
+        const warningItem = new DevArchitectTreeItem(
+          '0 source files found in target folder',
+          vscode.TreeItemCollapsibleState.None,
+          'warning',
+          'warning'
+        );
+        const actionItem = new DevArchitectTreeItem(
+          '👉 Click here to select a project subfolder',
+          vscode.TreeItemCollapsibleState.None,
+          'warning',
+          'folder-library'
+        );
+        actionItem.command = {
+          command: 'devarchitect.selectProjectRoot',
+          title: 'Select Project Subfolder',
+        };
+
+        const checkConfigItem = new DevArchitectTreeItem(
+          'Tip: Check .devarchitect/config.json includes',
+          vscode.TreeItemCollapsibleState.None,
+          'placeholder',
+          'info'
+        );
+
+        return Promise.resolve([scopeItem, warningItem, actionItem, checkConfigItem]);
+      }
+
+      if (!this.health) {
+        const item = new DevArchitectTreeItem(
+          'Click to evaluate codebase health',
+          vscode.TreeItemCollapsibleState.None,
+          'placeholder',
+          'play'
+        );
+        item.command = {
+          command: 'devarchitect.healthCheck',
+          title: 'Evaluate Health',
+        };
+        return Promise.resolve([scopeItem, item]);
+      }
+
+      // 3. Health Scores and Metrics
+      items.push(
         new DevArchitectTreeItem(
           `Overall Score: ${this.health.overallScore}/100 (Grade ${this.health.grade})`,
           vscode.TreeItemCollapsibleState.None,
@@ -129,9 +191,10 @@ export class ArchitectureHealthTreeProvider implements vscode.TreeDataProvider<D
           vscode.TreeItemCollapsibleState.None,
           'dimension',
           'heart'
-        ),
-      ];
+        )
+      );
 
+      // 4. Policy Violations
       if (this.issues.length > 0) {
         items.push(
           new DevArchitectTreeItem(
@@ -206,6 +269,7 @@ export class ActiveFileBlastRadiusTreeProvider implements vscode.TreeDataProvide
   private dependents: string[] = [];
   private rootDir: string = '';
   private hasWorkspace: boolean = true;
+  private currentGraph: ArchitectureGraph | null = null;
 
   public setRootDir(rootDir: string) {
     this.rootDir = rootDir;
@@ -220,14 +284,35 @@ export class ActiveFileBlastRadiusTreeProvider implements vscode.TreeDataProvide
   public updateFile(rootDir: string, filePath: string, graph: ArchitectureGraph | null) {
     this.rootDir = rootDir;
     this.activeFilePath = filePath;
+    this.currentGraph = graph;
     this.hasWorkspace = true;
+
     if (graph && filePath) {
       const rel = path.relative(rootDir, filePath).replace(/\\/g, '/');
-      this.dependents = graph.getDependents(rel);
+      // Look up dependents matching relative path or base name
+      let deps = graph.getDependents(rel);
+      if (deps.length === 0) {
+        // Also check if graph stored paths relative to a subfolder
+        const matchingNode = graph.getAllNodes().find(
+          (n) => n.path === rel || rel.endsWith(n.path) || n.path.endsWith(rel)
+        );
+        if (matchingNode) {
+          deps = graph.getDependents(matchingNode.path);
+        }
+      }
+      this.dependents = deps;
     } else {
       this.dependents = [];
     }
     this._onDidChangeTreeData.fire();
+  }
+
+  public refresh() {
+    if (this.rootDir && this.activeFilePath && this.currentGraph) {
+      this.updateFile(this.rootDir, this.activeFilePath, this.currentGraph);
+    } else {
+      this._onDidChangeTreeData.fire();
+    }
   }
 
   getTreeItem(element: DevArchitectTreeItem): vscode.TreeItem {
@@ -262,7 +347,7 @@ export class ActiveFileBlastRadiusTreeProvider implements vscode.TreeDataProvide
       if (this.dependents.length === 0) {
         return Promise.resolve([
           new DevArchitectTreeItem(
-            `[${fileName}] 0 Downstream Dependents (Leaf/Entry)`,
+            `[${fileName}] 0 Downstream Callers (Leaf/Entry)`,
             vscode.TreeItemCollapsibleState.None,
             'summary',
             'check'
@@ -271,7 +356,7 @@ export class ActiveFileBlastRadiusTreeProvider implements vscode.TreeDataProvide
       }
 
       const summaryHeader = new DevArchitectTreeItem(
-        `Blast Radius: ${this.dependents.length} downstream file(s)`,
+        `Blast Radius: ${this.dependents.length} downstream caller(s)`,
         vscode.TreeItemCollapsibleState.None,
         'summary',
         'flame'
@@ -284,10 +369,11 @@ export class ActiveFileBlastRadiusTreeProvider implements vscode.TreeDataProvide
           'summary',
           'file'
         );
+        const absPath = path.isAbsolute(dep) ? dep : path.join(this.rootDir, dep);
         item.command = {
           command: 'vscode.open',
           title: 'Open File',
-          arguments: [vscode.Uri.file(path.join(this.rootDir, dep))],
+          arguments: [vscode.Uri.file(absPath)],
         };
         return item;
       });
