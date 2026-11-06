@@ -10,6 +10,8 @@ export default defineConfig({
   target: 'node20',
   clean: true,
   dts: false,
-  noExternal: [/^@devarchitect\//],
-  external: ['typescript', 'fast-glob', 'commander', 'picocolors', 'zod', 'ignore'],
+  minify: true,
+  treeshake: true,
+  noExternal: [/^@devarchitect\//, 'zod', 'ignore', 'picocolors'],
+  external: ['typescript', 'fast-glob', 'commander'],
 });

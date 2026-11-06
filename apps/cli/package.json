@@ -1,6 +1,6 @@
 {
   "name": "devarchitect-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "DevArchitect — Understand your codebase. Improve its architecture. Engineer with confidence.",
   "type": "module",
   "bin": {
@@ -50,11 +50,15 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
-    "fast-glob": "^3.3.3",
-    "ignore": "^7.0.5",
-    "picocolors": "^1.1.1",
-    "typescript": "^5.7.3",
-    "zod": "^3.24.2"
+    "fast-glob": "^3.3.3"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.8.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@devarchitect/analyzers": "workspace:*",
@@ -67,7 +71,10 @@
     "@devarchitect/reporting": "workspace:*",
     "@devarchitect/rules": "workspace:*",
     "@types/node": "^22.13.1",
+    "ignore": "^7.0.5",
+    "picocolors": "^1.1.1",
     "tsup": "^9.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "zod": "^3.24.2"
   }
 }
