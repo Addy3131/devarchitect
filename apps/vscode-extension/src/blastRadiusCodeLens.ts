@@ -40,3 +40,4 @@ export class BlastRadiusCodeLensProvider implements vscode.CodeLensProvider {
     return [codeLens];
   }
 }
+

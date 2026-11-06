@@ -4,6 +4,11 @@
   "description": "Real-time architecture health, change blast radius, and boundary enforcement inside VS Code and Cursor",
   "version": "0.1.0",
   "publisher": "devarchitect",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Addy3131/devarchitect.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -83,7 +88,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "clean": "rimraf dist tsconfig.tsbuildinfo",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "package": "npx @vscode/vsce package --no-dependencies"
   },
   "dependencies": {
     "@devarchitect/analyzers": "workspace:*",
@@ -100,3 +106,4 @@
     "typescript": "^5.7.3"
   }
 }
+

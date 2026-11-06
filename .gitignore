@@ -41,3 +41,7 @@ Thumbs.db
 # Coverage
 coverage/
 **/coverage/
+
+# Extensions & Packages
+*.vsix
+*.tgz

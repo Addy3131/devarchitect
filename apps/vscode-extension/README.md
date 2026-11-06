@@ -30,3 +30,4 @@ pnpm run build
 ```
 
 Press **F5** in VS Code to run the Extension Development Host and test live in any workspace!
+

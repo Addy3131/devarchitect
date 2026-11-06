@@ -8,11 +8,13 @@ import { ArchitectureGraph } from '@devarchitect/graph';
 import { ProjectNode } from '@devarchitect/contracts';
 import { BlastRadiusCodeLensProvider } from './blastRadiusCodeLens.js';
 import { ArchitectureHealthTreeProvider, ActiveFileBlastRadiusTreeProvider } from './healthView.js';
+import { GutterDecorator } from './gutterDecorator.js';
 
 let statusBarItem: vscode.StatusBarItem;
 let codeLensProvider: BlastRadiusCodeLensProvider;
 let healthTreeProvider: ArchitectureHealthTreeProvider;
 let blastTreeProvider: ActiveFileBlastRadiusTreeProvider;
+let gutterDecorator: GutterDecorator;
 let currentGraph: ArchitectureGraph | null = null;
 let currentNodes: ProjectNode[] = [];
 let currentRootDir: string = '';
@@ -36,7 +38,11 @@ export async function activate(context: vscode.ExtensionContext) {
   vscode.window.registerTreeDataProvider('devarchitect.healthView', healthTreeProvider);
   vscode.window.registerTreeDataProvider('devarchitect.blastView', blastTreeProvider);
 
-  // 3. CodeLens Provider
+  // 3. Real-time Gutter & Inline Warning Decorator
+  gutterDecorator = new GutterDecorator();
+  context.subscriptions.push(gutterDecorator);
+
+  // 4. CodeLens Provider
   codeLensProvider = new BlastRadiusCodeLensProvider();
   const selector: vscode.DocumentSelector = [
     { language: 'typescript', scheme: 'file' },
@@ -100,10 +106,17 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  // 5. Track Active Editor Changes
+  // 5. Track Active Editor & Document Changes for Real-Time Gutter Updates
   vscode.window.onDidChangeActiveTextEditor(editor => {
     if (editor) {
       blastTreeProvider.updateFile(currentRootDir, editor.document.fileName, currentGraph);
+      gutterDecorator.updateActiveEditor(editor, currentRootDir, currentGraph);
+    }
+  });
+
+  vscode.workspace.onDidChangeTextDocument(event => {
+    if (event.document) {
+      gutterDecorator.triggerRealtimeLint(event.document, currentRootDir);
     }
   });
 
@@ -150,6 +163,7 @@ async function refreshArchitectureContext() {
     const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor) {
       blastTreeProvider.updateFile(currentRootDir, activeEditor.document.fileName, graph);
+      gutterDecorator.updateActiveEditor(activeEditor, currentRootDir, graph);
     }
   } catch (err) {
     statusBarItem.text = `$(shield) DevArchitect: Idle`;
@@ -159,3 +173,4 @@ async function refreshArchitectureContext() {
 export function deactivate() {
   if (statusBarItem) statusBarItem.dispose();
 }
+
