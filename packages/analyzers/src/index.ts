@@ -3,3 +3,7 @@ export * from './complexity.js';
 export * from './deadcode.js';
 export * from './duplication.js';
 export * from './fingerprint.js';
+export * from './rerenders.js';
+export * from './types-health.js';
+export * from './smells.js';
+export * from './contract-simulator.js';

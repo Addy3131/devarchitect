@@ -13,6 +13,10 @@ import { duplicationCommand } from './commands/duplication.js';
 import { fingerprintCommand, driftCommand } from './commands/fingerprint.js';
 import { generateCommand } from './commands/generate.js';
 import { rulesCommand } from './commands/rules.js';
+import { rerendersCommand } from './commands/rerenders.js';
+import { typesCommand } from './commands/types.js';
+import { smellsCommand } from './commands/smells.js';
+import { simulateCommand } from './commands/simulate.js';
 
 export function runCli(argv: string[] = process.argv): void {
   const program = new Command();
@@ -140,6 +144,34 @@ export function runCli(argv: string[] = process.argv): void {
       await rulesCommand();
     });
 
+  program
+    .command('rerenders')
+    .description('Analyze React components for re-render bottlenecks, inline JSX allocations & hook anti-patterns')
+    .action(async () => {
+      await rerendersCommand();
+    });
+
+  program
+    .command('types')
+    .description('Analyze TypeScript health: unused types, any hotspots & duplicate definitions')
+    .action(async () => {
+      await typesCommand();
+    });
+
+  program
+    .command('smells')
+    .description('Detect code smells, unhandled async promises, god components & empty catch blocks')
+    .action(async () => {
+      await smellsCommand();
+    });
+
+  program
+    .command('simulate [target]')
+    .description('Simulate breaking change contract impact and map all call sites before modifying a file')
+    .action(async (target) => {
+      await simulateCommand(target);
+    });
+
   program.parse(argv);
 }
 
@@ -157,3 +189,7 @@ export * from './commands/duplication.js';
 export * from './commands/fingerprint.js';
 export * from './commands/generate.js';
 export * from './commands/rules.js';
+export * from './commands/rerenders.js';
+export * from './commands/types.js';
+export * from './commands/smells.js';
+export * from './commands/simulate.js';

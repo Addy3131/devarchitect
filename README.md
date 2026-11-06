@@ -103,7 +103,15 @@ devarchitect impact <path>      # Calculates change blast radius & dependents
 devarchitect fingerprint        # Creates cryptographic structural fingerprint
 devarchitect drift              # Compares against baseline fingerprint to flag drift
 
-# 7. Architecture-Aware Code Scaffolding
+# 7. React Re-renders, TypeScript Health & Anti-Patterns
+devarchitect rerenders          # Analyzes React inline JSX allocations & hook re-render traps
+devarchitect types              # Scans unused types, any hotspots & duplicate type definitions
+devarchitect smells             # Detects unhandled async promises, god components & empty catches
+
+# 8. Pre-Flight Contract Break Simulator ("What will break if I change this?")
+devarchitect simulate <path>    # Maps exact public contract and every downstream call site in the repo
+
+# 9. Architecture-Aware Code Scaffolding
 devarchitect generate feature billing       # Scaffolds FSD-compliant feature module
 devarchitect generate component UserAvatar  # Scaffolds component matching project style
 devarchitect generate service payment       # Scaffolds typed service client

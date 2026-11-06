@@ -96,3 +96,4 @@ describe('Architecture Rule Engine & Policies', () => {
     expect(dbIssue?.severity).toBe('error');
   });
 });
+
