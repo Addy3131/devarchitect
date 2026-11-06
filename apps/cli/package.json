@@ -1,0 +1,37 @@
+{
+  "name": "@devarchitect/cli",
+  "version": "0.1.0",
+  "description": "DevArchitect — The local engineering intelligence engine for software architecture",
+  "type": "module",
+  "bin": {
+    "devarchitect": "./dist/bin.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "start": "node ./dist/bin.js"
+  },
+  "dependencies": {
+    "@devarchitect/config": "workspace:*",
+    "@devarchitect/contracts": "workspace:*",
+    "@devarchitect/core": "workspace:*",
+    "@devarchitect/graph": "workspace:*",
+    "@devarchitect/reporting": "workspace:*",
+    "commander": "^13.1.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "typescript": "^5.7.3"
+  }
+}
+

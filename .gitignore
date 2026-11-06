@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+**/node_modules/
+.pnpm-store/
+
+# Build artifacts
+dist/
+**/dist/
+build/
+**/build/
+.turbo/
+**/.turbo/
+.next/
+**/.next/
+out/
+**/out/
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# DevArchitect local cache & artifacts
+.devarchitect/cache/
+**/.devarchitect/cache/
+.devarchitect/reports/
+**/.devarchitect/reports/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+**/coverage/
