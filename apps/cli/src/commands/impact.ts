@@ -1,8 +1,7 @@
 import path from 'node:path';
-import fs from 'node:fs';
 import pc from 'picocolors';
-import { runProjectDiscovery } from '@devarchitect/core';
-import { ArchitectureGraph, calculateImpact } from '@devarchitect/graph';
+import { runProjectDiscovery, buildProjectGraph } from '@devarchitect/core';
+import { calculateImpact } from '@devarchitect/graph';
 import { formatImpactOutput } from '@devarchitect/reporting';
 
 export interface ImpactCommandOptions {
@@ -13,12 +12,12 @@ export async function impactCommand(targetPath?: string, options: ImpactCommandO
   const rootDir = process.cwd();
 
   if (!targetPath && !options.staged) {
-    console.error(pc.red('\n✖ Error: Please specify a target file path (e.g. devarchitect impact src/services/UserService.ts)\n'));
+    console.error(pc.red('\n✖ Error: Please specify a target file path (e.g. devarchitect impact src/services/api.ts)\n'));
     process.exit(1);
   }
 
-  const { nodes } = await runProjectDiscovery(rootDir);
-  const graph = new ArchitectureGraph(nodes);
+  const { discovery, nodes } = await runProjectDiscovery(rootDir);
+  const { graph } = buildProjectGraph(rootDir, nodes, discovery.typeScript);
 
   // Normalize target path
   const normalizedTarget = targetPath
@@ -28,4 +27,3 @@ export async function impactCommand(targetPath?: string, options: ImpactCommandO
   const impact = calculateImpact(graph, normalizedTarget);
   console.log('\n' + formatImpactOutput(impact) + '\n');
 }
-

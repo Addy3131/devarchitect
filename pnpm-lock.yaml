@@ -184,6 +184,9 @@ importers:
 
   apps/cli:
     dependencies:
+      '@devarchitect/analyzers':
+        specifier: workspace:*
+        version: link:../../packages/analyzers
       '@devarchitect/config':
         specifier: workspace:*
         version: link:../../packages/config
@@ -193,12 +196,21 @@ importers:
       '@devarchitect/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@devarchitect/generator':
+        specifier: workspace:*
+        version: link:../../packages/generator
       '@devarchitect/graph':
         specifier: workspace:*
         version: link:../../packages/graph
+      '@devarchitect/parsers':
+        specifier: workspace:*
+        version: link:../../packages/parsers
       '@devarchitect/reporting':
         specifier: workspace:*
         version: link:../../packages/reporting
+      '@devarchitect/rules':
+        specifier: workspace:*
+        version: link:../../packages/rules
       commander:
         specifier: ^13.1.0
         version: 13.1.0
@@ -281,6 +293,25 @@ importers:
         specifier: ^3.0.7
         version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
 
+  packages/analyzers:
+    dependencies:
+      '@devarchitect/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@devarchitect/graph':
+        specifier: workspace:*
+        version: link:../graph
+      '@devarchitect/parsers':
+        specifier: workspace:*
+        version: link:../parsers
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.20.5
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+
   packages/config:
     dependencies:
       '@devarchitect/contracts':
@@ -312,12 +343,31 @@ importers:
       '@devarchitect/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@devarchitect/graph':
+        specifier: workspace:*
+        version: link:../graph
+      '@devarchitect/parsers':
+        specifier: workspace:*
+        version: link:../parsers
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
       ignore:
         specifier: ^7.0.3
         version: 7.0.14
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.20.5
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+
+  packages/generator:
+    dependencies:
+      '@devarchitect/contracts':
+        specifier: workspace:*
+        version: link:../contracts
     devDependencies:
       '@types/node':
         specifier: ^22.13.1
@@ -336,6 +386,19 @@ importers:
         specifier: ^5.7.3
         version: 5.9.3
 
+  packages/parsers:
+    dependencies:
+      '@devarchitect/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.20.5
+
   packages/reporting:
     dependencies:
       '@devarchitect/contracts':
@@ -345,6 +408,22 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1
     devDependencies:
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+
+  packages/rules:
+    dependencies:
+      '@devarchitect/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@devarchitect/graph':
+        specifier: workspace:*
+        version: link:../graph
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.20.5
       typescript:
         specifier: ^5.7.3
         version: 5.9.3

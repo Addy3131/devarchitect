@@ -5,6 +5,14 @@ import { inspectCommand } from './commands/inspect.js';
 import { doctorCommand } from './commands/doctor.js';
 import { impactCommand } from './commands/impact.js';
 import { validateCommand } from './commands/validate.js';
+import { graphCommand } from './commands/graph.js';
+import { healthCommand } from './commands/health.js';
+import { complexityCommand } from './commands/complexity.js';
+import { deadCodeCommand } from './commands/deadcode.js';
+import { duplicationCommand } from './commands/duplication.js';
+import { fingerprintCommand, driftCommand } from './commands/fingerprint.js';
+import { generateCommand } from './commands/generate.js';
+import { rulesCommand } from './commands/rules.js';
 
 export function runCli(argv: string[] = process.argv): void {
   const program = new Command();
@@ -65,6 +73,73 @@ export function runCli(argv: string[] = process.argv): void {
       await validateCommand(options);
     });
 
+  program
+    .command('graph')
+    .description('Visualize repository architecture dependency graph')
+    .option('-f, --format <format>', 'Graph format: mermaid, dot, json', 'mermaid')
+    .option('-o, --output <file>', 'Export graph to file')
+    .action(async (options) => {
+      await graphCommand(options);
+    });
+
+  program
+    .command('health')
+    .description('Calculate transparent 0-100 codebase health score')
+    .option('--json', 'Output health metrics as JSON')
+    .action(async (options) => {
+      await healthCommand(options);
+    });
+
+  program
+    .command('complexity')
+    .description('Identify high cyclomatic complexity functions and oversized files')
+    .action(async () => {
+      await complexityCommand();
+    });
+
+  program
+    .command('deadcode')
+    .description('Detect unused exports and orphaned files across the repository')
+    .action(async () => {
+      await deadCodeCommand();
+    });
+
+  program
+    .command('duplication')
+    .description('Detect repeated code blocks and duplicate logic clusters')
+    .option('-l, --lines <number>', 'Minimum duplicate line threshold', '6')
+    .action(async (options) => {
+      await duplicationCommand(options);
+    });
+
+  program
+    .command('fingerprint')
+    .description('Generate reproducible cryptographic architecture fingerprint')
+    .action(async () => {
+      await fingerprintCommand();
+    });
+
+  program
+    .command('drift')
+    .description('Detect architectural divergence and drift from saved baseline fingerprint')
+    .action(async () => {
+      await driftCommand();
+    });
+
+  program
+    .command('generate <type> <name>')
+    .description('Scaffold architecture-compliant feature, component, or service matching existing conventions')
+    .action(async (type, name) => {
+      await generateCommand(type, name);
+    });
+
+  program
+    .command('rules')
+    .description('List available architecture policies and presets')
+    .action(async () => {
+      await rulesCommand();
+    });
+
   program.parse(argv);
 }
 
@@ -74,4 +149,11 @@ export * from './commands/inspect.js';
 export * from './commands/doctor.js';
 export * from './commands/impact.js';
 export * from './commands/validate.js';
-
+export * from './commands/graph.js';
+export * from './commands/health.js';
+export * from './commands/complexity.js';
+export * from './commands/deadcode.js';
+export * from './commands/duplication.js';
+export * from './commands/fingerprint.js';
+export * from './commands/generate.js';
+export * from './commands/rules.js';

@@ -21,11 +21,15 @@
     "start": "node ./dist/bin.js"
   },
   "dependencies": {
+    "@devarchitect/analyzers": "workspace:*",
     "@devarchitect/config": "workspace:*",
     "@devarchitect/contracts": "workspace:*",
     "@devarchitect/core": "workspace:*",
+    "@devarchitect/generator": "workspace:*",
     "@devarchitect/graph": "workspace:*",
+    "@devarchitect/parsers": "workspace:*",
     "@devarchitect/reporting": "workspace:*",
+    "@devarchitect/rules": "workspace:*",
     "commander": "^13.1.0",
     "picocolors": "^1.1.1"
   },

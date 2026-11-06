@@ -6,7 +6,9 @@
   },
   "references": [
     { "path": "../contracts" },
-    { "path": "../config" }
+    { "path": "../config" },
+    { "path": "../parsers" },
+    { "path": "../graph" }
   ],
   "include": ["src/**/*"]
 }

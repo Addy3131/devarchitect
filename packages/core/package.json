@@ -19,6 +19,8 @@
   "dependencies": {
     "@devarchitect/config": "workspace:*",
     "@devarchitect/contracts": "workspace:*",
+    "@devarchitect/graph": "workspace:*",
+    "@devarchitect/parsers": "workspace:*",
     "fast-glob": "^3.3.3",
     "ignore": "^7.0.3"
   },

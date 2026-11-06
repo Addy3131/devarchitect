@@ -1,0 +1,28 @@
+{
+  "name": "@devarchitect/analyzers",
+  "version": "0.1.0",
+  "description": "DevArchitect code health, complexity, duplication, deadcode, and drift analyzers",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@devarchitect/contracts": "workspace:*",
+    "@devarchitect/graph": "workspace:*",
+    "@devarchitect/parsers": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "typescript": "^5.7.3"
+  }
+}

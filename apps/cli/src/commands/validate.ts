@@ -1,9 +1,10 @@
 import pc from 'picocolors';
-import { runProjectDiscovery } from '@devarchitect/core';
+import { runProjectDiscovery, buildProjectGraph } from '@devarchitect/core';
 import { loadConfig, loadBaseline, saveBaseline } from '@devarchitect/config';
 import { ArchitectureIssue } from '@devarchitect/contracts';
 import { formatIssuesOutput } from '@devarchitect/reporting';
-import { ArchitectureGraph, detectCycles } from '@devarchitect/graph';
+import { defaultRuleEngine } from '@devarchitect/rules';
+import { detectCycles } from '@devarchitect/graph';
 
 export interface ValidateCommandOptions {
   updateBaseline?: boolean;
@@ -13,30 +14,22 @@ export async function validateCommand(options: ValidateCommandOptions = {}): Pro
   const rootDir = process.cwd();
   const { config } = loadConfig(rootDir);
   const { discovery, nodes } = await runProjectDiscovery(rootDir);
-  const graph = new ArchitectureGraph(nodes);
+  const { graph } = buildProjectGraph(rootDir, nodes, discovery.typeScript);
 
   console.log(pc.bold(pc.cyan('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
   console.log(pc.bold(pc.cyan('  DEVARCHITECT ARCHITECTURE VALIDATION')));
-  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')));
+  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
+  console.log(`  Preset: ${pc.bold(config.architecture.preset)} | Nodes: ${nodes.length} | Edges: ${graph.getAllEdges().length}\n`);
 
-  const issues: ArchitectureIssue[] = [];
+  // Evaluate all rules via RuleEngine
+  const issues = defaultRuleEngine.evaluate({
+    graph,
+    nodes,
+    edges: graph.getAllEdges(),
+    config,
+  });
 
-  // Check 1: Circular dependencies
   const cycles = detectCycles(graph);
-  for (const cycle of cycles) {
-    issues.push({
-      id: `cycle-${cycle.path.join('-')}`,
-      ruleId: 'no-circular-dependencies',
-      severity: 'error',
-      message: `Circular dependency detected: ${cycle.path.join(' -> ')}`,
-      filePath: cycle.path[0],
-      evidence: cycle.path,
-      suggestion: 'Extract shared types or logic into a separate module to break the cycle.',
-      dimension: 'architecture',
-    });
-  }
-
-  // Baseline & Architecture Debt Ratchet
   const baseline = loadBaseline(rootDir);
 
   if (options.updateBaseline) {
@@ -68,7 +61,7 @@ export async function validateCommand(options: ValidateCommandOptions = {}): Pro
         newErrorsCount++;
       }
     }
-    console.log(pc.gray(`  Architecture Ratchet: Baseline has ${baseline.issues.length} known debt items.`));
+    console.log(pc.gray(`  Architecture Debt Ratchet: Baseline has ${baseline.issues.length} known debt items.`));
   } else {
     newErrorsCount = issues.filter(i => i.severity === 'error').length;
   }
@@ -76,10 +69,9 @@ export async function validateCommand(options: ValidateCommandOptions = {}): Pro
   console.log(formatIssuesOutput(issues));
 
   if (newErrorsCount > 0 && config.guard.failOnNewErrors) {
-    console.error(pc.red(`\n✖ Architecture check failed: ${newErrorsCount} new architectural errors detected.\n`));
+    console.error(pc.red(`✖ Architecture check failed: ${newErrorsCount} new architectural errors detected.\n`));
     process.exit(1);
   } else {
-    console.log(pc.green('\n✔ Architecture policy validation passed.\n'));
+    console.log(pc.green('✔ Architecture policy validation passed.\n'));
   }
 }
-
