@@ -3,7 +3,13 @@ import { exec } from 'node:child_process';
 import { runProjectDiscovery, buildProjectGraph } from '@devarchitect/core';
 import { defaultRuleEngine } from '@devarchitect/rules';
 import { loadConfig } from '@devarchitect/config';
-import { calculateProjectHealth, analyzeReactRerenders, analyzeTypeHealth, analyzeCodeSmells } from '@devarchitect/analyzers';
+import {
+  calculateProjectHealth,
+  analyzeReactRerenders,
+  analyzeTypeHealth,
+  analyzeCodeSmells,
+  answerCodebaseQuestion
+} from '@devarchitect/analyzers';
 import { startStudioServer } from '@devarchitect/reporting';
 
 export interface StudioCommandOptions {
@@ -56,7 +62,12 @@ export async function studioCommand(options: StudioCommandOptions = {}): Promise
           smellsCount: smells.totalSmells,
         },
       },
-      { port }
+      {
+        port,
+        onAsk: (question: string) => {
+          return answerCodebaseQuestion(rootDir, question, nodes, graph.getAllEdges(), graph);
+        },
+      }
     );
 
     console.log(pc.green(`\n  ✔ DevArchitect Studio running at: ${pc.bold(pc.underline(url))}`));

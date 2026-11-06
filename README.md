@@ -111,18 +111,19 @@ devarchitect smells             # Detects unhandled async promises, god componen
 # 8. Pre-Flight Contract Break Simulator ("What will break if I change this?")
 devarchitect simulate <path>    # Maps exact public contract and every downstream call site in the repo
 
-# 9. Git PR Blast Radius & Pre-Commit Guardrails
-devarchitect pr                 # Analyzes changed/staged files vs main branch & assigns risk score
+# 9. Git PR Blast Radius, Pre-Push Rovo-Gate & Quality Hooks
+devarchitect pr                 # Analyzes branch changes vs main, risk score & impact table
 devarchitect pr --staged        # Analyzes staged git changes before committing
-devarchitect install-hooks      # Installs zero-dependency pre-commit safety hook
+devarchitect pr --pre-push      # Intercepts outgoing commits before git push (Rovo quality gate)
+devarchitect install-hooks      # Installs zero-dependency pre-commit & pre-push guardrails
 
 # 10. Automated Safe Fixer
 devarchitect fix                # Interactively fixes console logs, empty catch blocks & unused types
 devarchitect fix --dry-run      # Previews proposed diffs and fixes without modifying files
 
-# 11. Local Interactive Studio & Codebase Q&A
-devarchitect studio             # Launches zero-install local web dashboard with live dependency graph
-devarchitect studio --port 4500 # Custom port
+# 11. Visual Interactive Studio & Codebase Q&A
+devarchitect studio             # Launches high-performance visual studio with interactive canvas
+devarchitect studio --port 4500 # Custom port (includes Vis.js physics, blast radius glow & in-browser Q&A)
 devarchitect ask "How is checkout architected?" # Deterministic codebase Q&A grounded in AST & graph
 
 # 12. Architecture-Aware Code Scaffolding

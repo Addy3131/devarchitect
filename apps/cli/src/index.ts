@@ -179,16 +179,19 @@ export function runCli(argv: string[] = process.argv): void {
 
   program
     .command('pr')
-    .description('Analyze cumulative blast radius for branch changes and generate GitHub PR architectural review')
+    .description('Analyze cumulative blast radius for branch changes and generate AI PR architectural review')
     .option('-b, --base <branch>', 'Base branch to diff against', 'main')
     .option('--staged', 'Analyze only currently staged files')
+    .option('--pre-push', 'Run outgoing commits check for git pre-push hook')
+    .option('--github-comment', 'Format review for GitHub / Bitbucket PR comment')
+    .option('-o, --output <file>', 'Save PR markdown review to file')
     .action(async (options) => {
       await prCommand(options);
     });
 
   program
     .command('install-hooks')
-    .description('Install Git pre-commit hook to prevent committing architectural violations')
+    .description('Install Git pre-commit & pre-push quality gates (Rovo-style quality gates)')
     .action(async () => {
       await installHooksCommand();
     });
