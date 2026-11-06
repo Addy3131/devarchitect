@@ -1,10 +1,11 @@
 {
-  "name": "devarchitect",
+  "name": "devarchitect-cli",
   "version": "0.1.0",
   "description": "DevArchitect — Understand your codebase. Improve its architecture. Engineer with confidence.",
   "type": "module",
   "bin": {
-    "devarchitect": "./dist/bin.js"
+    "devarchitect": "./dist/bin.js",
+    "devarchitect-cli": "./dist/bin.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -42,12 +43,20 @@
     "url": "https://github.com/Addy3131/devarchitect/issues"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "typecheck": "tsc --noEmit",
     "start": "node ./dist/bin.js"
   },
   "dependencies": {
+    "commander": "^13.1.0",
+    "fast-glob": "^3.3.3",
+    "ignore": "^7.0.5",
+    "picocolors": "^1.1.1",
+    "typescript": "^5.7.3",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
     "@devarchitect/analyzers": "workspace:*",
     "@devarchitect/config": "workspace:*",
     "@devarchitect/contracts": "workspace:*",
@@ -57,12 +66,8 @@
     "@devarchitect/parsers": "workspace:*",
     "@devarchitect/reporting": "workspace:*",
     "@devarchitect/rules": "workspace:*",
-    "commander": "^13.1.0",
-    "picocolors": "^1.1.1"
-  },
-  "devDependencies": {
     "@types/node": "^22.13.1",
+    "tsup": "^9.0.0",
     "typescript": "^5.7.3"
   }
 }
-
