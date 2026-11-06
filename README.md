@@ -22,9 +22,10 @@ DevArchitect is built as a local-first, TypeScript monorepo powered by `pnpm` an
 ```
 devarchitect/
 ├── apps/
-│   ├── cli/            # Local engineering engine & developer CLI
-│   ├── studio/         # Cloud / Web architecture workspace & explorer (v1.0)
-│   └── api/            # Hono Cloud API & persistent storage gateway
+│   ├── cli/                # Local engineering engine & developer CLI (devarchitect on npm)
+│   ├── vscode-extension/   # VS Code & Cursor extension (CodeLens, Status Bar, Blast Radius)
+│   ├── studio/             # Web architecture workspace & live visual canvas
+│   └── api/                # Cloud API & persistent storage gateway
 ├── packages/
 │   ├── contracts/      # Shared types, Zod schemas, Unified Project Model
 │   ├── config/         # Config loaders, presets & baseline ratchet manager
@@ -43,7 +44,16 @@ devarchitect/
 
 ## 🚀 Quick Start
 
-### Installation
+### Quick Run with npx (Zero Install)
+
+You can run DevArchitect directly on any repository without cloning or installing:
+
+```bash
+npx devarchitect health
+npx devarchitect studio
+```
+
+### Local Workspace Setup
 
 Inside the monorepo root:
 
@@ -51,12 +61,21 @@ Inside the monorepo root:
 # Install workspace dependencies
 pnpm install
 
-# Build all packages
+# Build all packages & VS Code extension
 pnpm run build
 
 # Run automated test suite
 pnpm run test
 ```
+
+### VS Code & Cursor IDE Extension
+
+DevArchitect comes with a dedicated VS Code & Cursor extension located in [`apps/vscode-extension`](file:///apps/vscode-extension):
+- **🛡️ Status Bar Code Health**: Live 0–100 health score & grade in the bottom bar.
+- **💥 Inline CodeLens Blast Radius**: Shows exact downstream dependents above every component before you edit.
+- **🗺️ Activity Bar Sidebar**: Tree view showing architecture health and active file dependents with 1-click jump-to-file.
+
+To run the extension in development mode, open the monorepo in VS Code and press **F5** (Run Extension).
 
 ### Using the CLI Globally
 

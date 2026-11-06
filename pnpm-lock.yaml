@@ -225,6 +225,40 @@ importers:
         specifier: ^5.7.3
         version: 5.9.3
 
+  apps/vscode-extension:
+    dependencies:
+      '@devarchitect/analyzers':
+        specifier: workspace:*
+        version: link:../../packages/analyzers
+      '@devarchitect/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@devarchitect/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@devarchitect/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@devarchitect/graph':
+        specifier: workspace:*
+        version: link:../../packages/graph
+      '@devarchitect/rules':
+        specifier: workspace:*
+        version: link:../../packages/rules
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.20.5
+      '@types/vscode':
+        specifier: ^1.85.0
+        version: 1.145.0
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.1.4
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+
   examples/nextjs-app:
     dependencies:
       next:
@@ -1152,6 +1186,9 @@ packages:
 
   '@types/react@18.3.31':
     resolution: {integrity: sha512-vfEqpXTvwT91yhmwdfouStN2hSKwTvyRs8qpLfADyrq/kxDw0hZM7Wk9Ug1FELj8hIby+S/+kQCSRFF32nv2Qw==}
+
+  '@types/vscode@1.145.0':
+    resolution: {integrity: sha512-mADZK4SF/j1n0+Qk4bH8NT1qTQGYDAsbhb5hStbzuB3hKP3mRH7xja5yUaIm7ExCh65Ff+C9XGwxcBvSlTCvkQ==}
 
   '@vitejs/plugin-react@4.7.0':
     resolution: {integrity: sha512-gUu9hwfWvvEDBBmgtAowQCojwZmJ5mcLn3aufeCsitijs3+f2NsrPtlAWIR6OPiqljl96GVCUbLe0HyqIpVaoA==}
@@ -2387,6 +2424,8 @@ snapshots:
     dependencies:
       '@types/prop-types': 15.7.15
       csstype: 3.2.3
+
+  '@types/vscode@1.145.0': {}
 
   '@vitejs/plugin-react@4.7.0(vite@6.4.5(@types/node@22.20.5)(jiti@1.21.7))':
     dependencies:

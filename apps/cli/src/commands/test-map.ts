@@ -38,3 +38,4 @@ export async function testMapCommand(): Promise<void> {
   console.log(pc.cyan('  💡 Recommendation:'));
   console.log(pc.gray(`  Add unit/integration test suites for the top critical modules above to protect against regressions.\n`));
 }
+

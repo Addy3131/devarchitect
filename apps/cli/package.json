@@ -1,7 +1,7 @@
 {
-  "name": "@devarchitect/cli",
+  "name": "devarchitect",
   "version": "0.1.0",
-  "description": "DevArchitect — The local engineering intelligence engine for software architecture",
+  "description": "DevArchitect — Understand your codebase. Improve its architecture. Engineer with confidence.",
   "type": "module",
   "bin": {
     "devarchitect": "./dist/bin.js"
@@ -13,6 +13,33 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "architecture",
+    "engineering-intelligence",
+    "dependency-graph",
+    "clean-architecture",
+    "feature-sliced",
+    "code-health",
+    "blast-radius",
+    "refactoring",
+    "code-smells",
+    "rerenders"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Addy3131/devarchitect.git"
+  },
+  "homepage": "https://github.com/Addy3131/devarchitect#readme",
+  "bugs": {
+    "url": "https://github.com/Addy3131/devarchitect/issues"
   },
   "scripts": {
     "build": "tsc",

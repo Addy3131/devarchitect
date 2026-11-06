@@ -48,3 +48,4 @@ export async function depsCommand(): Promise<void> {
     console.log('');
   }
 }
+

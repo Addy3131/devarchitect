@@ -33,3 +33,4 @@ export async function bloatCommand(): Promise<void> {
     console.log(`    ${pc.cyan('Suggested Fix:')} ${pc.gray(issue.suggestedFix)}\n`);
   }
 }
+

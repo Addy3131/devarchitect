@@ -1,0 +1,102 @@
+{
+  "name": "vscode-devarchitect",
+  "displayName": "DevArchitect — Engineering Intelligence",
+  "description": "Real-time architecture health, change blast radius, and boundary enforcement inside VS Code and Cursor",
+  "version": "0.1.0",
+  "publisher": "devarchitect",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Testing",
+    "Visualization"
+  ],
+  "keywords": [
+    "architecture",
+    "blast-radius",
+    "code-health",
+    "dependency-graph",
+    "refactoring"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "devarchitect.launchStudio",
+        "title": "DevArchitect: Open Interactive Web Studio",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "devarchitect.healthCheck",
+        "title": "DevArchitect: Run Codebase Health Check",
+        "icon": "$(pulse)"
+      },
+      {
+        "command": "devarchitect.inspectCurrentFile",
+        "title": "DevArchitect: Inspect File Blast Radius",
+        "icon": "$(flame)"
+      },
+      {
+        "command": "devarchitect.validateArchitecture",
+        "title": "DevArchitect: Validate Architecture Rules",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "devarchitect.auditEnv",
+        "title": "DevArchitect: Audit Environment Variables & Secrets",
+        "icon": "$(key)"
+      },
+      {
+        "command": "devarchitect.fixSmells",
+        "title": "DevArchitect: Run Safe Fixer (Dry Run)",
+        "icon": "$(tools)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "devarchitect-sidebar",
+          "title": "DevArchitect",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "devarchitect-sidebar": [
+        {
+          "id": "devarchitect.healthView",
+          "name": "Architecture Health"
+        },
+        {
+          "id": "devarchitect.blastView",
+          "name": "Active File Blast Radius"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@devarchitect/analyzers": "workspace:*",
+    "@devarchitect/config": "workspace:*",
+    "@devarchitect/contracts": "workspace:*",
+    "@devarchitect/core": "workspace:*",
+    "@devarchitect/graph": "workspace:*",
+    "@devarchitect/rules": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "@types/vscode": "^1.85.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.3"
+  }
+}

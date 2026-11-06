@@ -55,3 +55,4 @@ export async function envCommand(): Promise<void> {
   }
   console.log('');
 }
+
