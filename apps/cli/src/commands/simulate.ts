@@ -81,3 +81,4 @@ export async function simulateCommand(targetPath?: string): Promise<void> {
   }
   console.log(pc.bold(pc.cyan('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')));
 }
+

@@ -19,7 +19,9 @@ export const DEFAULT_CONFIG: DevArchitectConfig = {
       'features/**',
       'modules/**',
       'services/**',
-      'hooks/**'
+      'hooks/**',
+      'packages/**',
+      'apps/**'
     ],
     exclude: [
       '**/node_modules/**',

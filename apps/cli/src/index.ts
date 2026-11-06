@@ -17,6 +17,11 @@ import { rerendersCommand } from './commands/rerenders.js';
 import { typesCommand } from './commands/types.js';
 import { smellsCommand } from './commands/smells.js';
 import { simulateCommand } from './commands/simulate.js';
+import { prCommand } from './commands/pr.js';
+import { installHooksCommand } from './commands/hooks.js';
+import { fixCommand } from './commands/fix.js';
+import { studioCommand } from './commands/studio.js';
+import { askCommand } from './commands/ask.js';
 
 export function runCli(argv: string[] = process.argv): void {
   const program = new Command();
@@ -172,6 +177,46 @@ export function runCli(argv: string[] = process.argv): void {
       await simulateCommand(target);
     });
 
+  program
+    .command('pr')
+    .description('Analyze cumulative blast radius for branch changes and generate GitHub PR architectural review')
+    .option('-b, --base <branch>', 'Base branch to diff against', 'main')
+    .option('--staged', 'Analyze only currently staged files')
+    .action(async (options) => {
+      await prCommand(options);
+    });
+
+  program
+    .command('install-hooks')
+    .description('Install Git pre-commit hook to prevent committing architectural violations')
+    .action(async () => {
+      await installHooksCommand();
+    });
+
+  program
+    .command('fix')
+    .description('Automatically apply safe refactoring fixes for empty catches and leftover console logs')
+    .option('--dry-run', 'Preview changes without modifying files')
+    .action(async (options) => {
+      await fixCommand(options);
+    });
+
+  program
+    .command('studio')
+    .description('Launch DevArchitect Studio local interactive web dashboard')
+    .option('-p, --port <port>', 'Port to run studio on', '4321')
+    .option('--no-open', 'Do not automatically open the browser')
+    .action(async (options) => {
+      await studioCommand(options);
+    });
+
+  program
+    .command('ask <question>')
+    .description('Ask natural language questions about your repository architecture and data flow')
+    .action(async (question) => {
+      await askCommand(question);
+    });
+
   program.parse(argv);
 }
 
@@ -193,3 +238,8 @@ export * from './commands/rerenders.js';
 export * from './commands/types.js';
 export * from './commands/smells.js';
 export * from './commands/simulate.js';
+export * from './commands/pr.js';
+export * from './commands/hooks.js';
+export * from './commands/fix.js';
+export * from './commands/studio.js';
+export * from './commands/ask.js';

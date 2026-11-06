@@ -60,3 +60,4 @@ export async function typesCommand(): Promise<void> {
     console.log(pc.green('  ✔ Type definitions are clean, unified, and strictly typed.\n'));
   }
 }
+

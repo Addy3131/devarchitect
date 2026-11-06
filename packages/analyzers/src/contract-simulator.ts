@@ -227,3 +227,4 @@ export function simulateContractImpact(
     safeRefactoringGuide,
   };
 }
+

@@ -111,7 +111,21 @@ devarchitect smells             # Detects unhandled async promises, god componen
 # 8. Pre-Flight Contract Break Simulator ("What will break if I change this?")
 devarchitect simulate <path>    # Maps exact public contract and every downstream call site in the repo
 
-# 9. Architecture-Aware Code Scaffolding
+# 9. Git PR Blast Radius & Pre-Commit Guardrails
+devarchitect pr                 # Analyzes changed/staged files vs main branch & assigns risk score
+devarchitect pr --staged        # Analyzes staged git changes before committing
+devarchitect install-hooks      # Installs zero-dependency pre-commit safety hook
+
+# 10. Automated Safe Fixer
+devarchitect fix                # Interactively fixes console logs, empty catch blocks & unused types
+devarchitect fix --dry-run      # Previews proposed diffs and fixes without modifying files
+
+# 11. Local Interactive Studio & Codebase Q&A
+devarchitect studio             # Launches zero-install local web dashboard with live dependency graph
+devarchitect studio --port 4500 # Custom port
+devarchitect ask "How is checkout architected?" # Deterministic codebase Q&A grounded in AST & graph
+
+# 12. Architecture-Aware Code Scaffolding
 devarchitect generate feature billing       # Scaffolds FSD-compliant feature module
 devarchitect generate component UserAvatar  # Scaffolds component matching project style
 devarchitect generate service payment       # Scaffolds typed service client

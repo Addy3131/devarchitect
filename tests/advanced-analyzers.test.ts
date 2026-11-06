@@ -4,7 +4,8 @@ import {
   analyzeReactRerenders,
   analyzeTypeHealth,
   analyzeCodeSmells,
-  simulateContractImpact
+  simulateContractImpact,
+  answerCodebaseQuestion
 } from '../packages/analyzers/src/index.js';
 import { runProjectDiscovery, buildProjectGraph } from '../packages/core/src/index.js';
 
@@ -58,4 +59,31 @@ describe('Advanced Analyzers & Safety Simulators', () => {
     expect(report.consumers.some(c => c.consumerFile.includes('useProducts'))).toBe(true);
     expect(report.safeRefactoringGuide.length).toBeGreaterThan(0);
   });
+
+  it('answers architecture, dependency, location, and complexity questions with high accuracy', async () => {
+    const { discovery, nodes } = await runProjectDiscovery(reactExampleDir);
+    const { graph } = buildProjectGraph(reactExampleDir, nodes, discovery.typeScript);
+
+    // 1. Feature Architecture Question
+    const q1 = answerCodebaseQuestion(reactExampleDir, 'How is checkout architected?', nodes, graph.getAllEdges(), graph);
+    expect(q1.topic).toContain('CHECKOUT');
+    expect(q1.relatedFiles.some(f => f.includes('checkout'))).toBe(true);
+    expect(q1.confidence).toBe('High');
+
+    // 2. Downstream Dependents Question
+    const q2 = answerCodebaseQuestion(reactExampleDir, 'Who uses productService?', nodes, graph.getAllEdges(), graph);
+    expect(q2.topic).toContain('productService');
+    expect(q2.relatedFiles.some(f => f.includes('useProducts'))).toBe(true);
+
+    // 3. Location Question
+    const q3 = answerCodebaseQuestion(reactExampleDir, 'Where is CheckoutForm?', nodes, graph.getAllEdges(), graph);
+    expect(q3.topic).toContain('CheckoutForm');
+    expect(q3.flowSteps.some(s => s.includes('Primary Location'))).toBe(true);
+
+    // 4. Complexity Hotspots Question
+    const q4 = answerCodebaseQuestion(reactExampleDir, 'What are the most complex files?', nodes, graph.getAllEdges(), graph);
+    expect(q4.topic).toContain('Complexity Hotspots');
+    expect(q4.relatedFiles.length).toBeGreaterThan(0);
+  });
 });
+

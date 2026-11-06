@@ -69,3 +69,4 @@ export async function rerendersCommand(): Promise<void> {
     console.log('');
   }
 }
+

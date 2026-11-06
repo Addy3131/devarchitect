@@ -7,3 +7,5 @@ export * from './rerenders.js';
 export * from './types-health.js';
 export * from './smells.js';
 export * from './contract-simulator.js';
+export * from './fixer.js';
+export * from './ask.js';
