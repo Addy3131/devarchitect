@@ -5,7 +5,11 @@ import {
   analyzeTypeHealth,
   analyzeCodeSmells,
   simulateContractImpact,
-  answerCodebaseQuestion
+  answerCodebaseQuestion,
+  analyzeEnvironmentVariables,
+  analyzeDependencies,
+  analyzeBundleBloat,
+  analyzeTestMap
 } from '../packages/analyzers/src/index.js';
 import { runProjectDiscovery, buildProjectGraph } from '../packages/core/src/index.js';
 
@@ -84,6 +88,43 @@ describe('Advanced Analyzers & Safety Simulators', () => {
     const q4 = answerCodebaseQuestion(reactExampleDir, 'What are the most complex files?', nodes, graph.getAllEdges(), graph);
     expect(q4.topic).toContain('Complexity Hotspots');
     expect(q4.relatedFiles.length).toBeGreaterThan(0);
+  });
+
+  it('audits environment variables and prevents client secret leaks', async () => {
+    const { nodes } = await runProjectDiscovery(reactExampleDir);
+    const report = analyzeEnvironmentVariables(reactExampleDir, nodes);
+
+    expect(Array.isArray(report.usedVariables)).toBe(true);
+    expect(Array.isArray(report.clientSecretLeaks)).toBe(true);
+    expect(report.clientSecretLeaks.length).toBe(0);
+  });
+
+  it('detects phantom dependencies and zombie packages', async () => {
+    const { nodes } = await runProjectDiscovery(reactExampleDir);
+    const report = analyzeDependencies(reactExampleDir, nodes);
+
+    expect(report.totalPackagesDeclared).toBeGreaterThanOrEqual(1);
+    expect(Array.isArray(report.phantomDependencies)).toBe(true);
+    expect(Array.isArray(report.zombieDependencies)).toBe(true);
+  });
+
+  it('audits bundle bloat and tree-shaking traps', async () => {
+    const { nodes } = await runProjectDiscovery(reactExampleDir);
+    const report = analyzeBundleBloat(reactExampleDir, nodes);
+
+    expect(report.totalIssues).toBeDefined();
+    expect(report.barrelTrapsCount).toBeGreaterThanOrEqual(0);
+    expect(report.serverInClientCount).toBeGreaterThanOrEqual(0);
+  });
+
+  it('analyzes architectural test coverage gaps and maps untested files', async () => {
+    const { discovery, nodes } = await runProjectDiscovery(reactExampleDir);
+    const { graph } = buildProjectGraph(reactExampleDir, nodes, discovery.typeScript);
+    const report = analyzeTestMap(reactExampleDir, nodes, graph);
+
+    expect(report.totalSourceFiles).toBeGreaterThanOrEqual(1);
+    expect(Array.isArray(report.untestedFiles)).toBe(true);
+    expect(report.coveragePercentage).toBeDefined();
   });
 });
 

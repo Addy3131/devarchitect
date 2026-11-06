@@ -22,6 +22,10 @@ import { installHooksCommand } from './commands/hooks.js';
 import { fixCommand } from './commands/fix.js';
 import { studioCommand } from './commands/studio.js';
 import { askCommand } from './commands/ask.js';
+import { envCommand } from './commands/env.js';
+import { depsCommand } from './commands/deps.js';
+import { bloatCommand } from './commands/bloat.js';
+import { testMapCommand } from './commands/test-map.js';
 
 export function runCli(argv: string[] = process.argv): void {
   const program = new Command();
@@ -220,6 +224,34 @@ export function runCli(argv: string[] = process.argv): void {
       await askCommand(question);
     });
 
+  program
+    .command('env')
+    .description('Audit environment variables for missing .env.example definitions and client secret leaks')
+    .action(async () => {
+      await envCommand();
+    });
+
+  program
+    .command('deps')
+    .description('Detect phantom dependencies (used in code but missing from package.json) and zombie packages')
+    .action(async () => {
+      await depsCommand();
+    });
+
+  program
+    .command('bloat')
+    .description('Detect heavy barrel import traps, server modules in client UI, and wildcard icon imports')
+    .action(async () => {
+      await bloatCommand();
+    });
+
+  program
+    .command('test-map')
+    .description('Analyze architectural test coverage gaps and rank untested files by blast radius risk')
+    .action(async () => {
+      await testMapCommand();
+    });
+
   program.parse(argv);
 }
 
@@ -246,3 +278,7 @@ export * from './commands/hooks.js';
 export * from './commands/fix.js';
 export * from './commands/studio.js';
 export * from './commands/ask.js';
+export * from './commands/env.js';
+export * from './commands/deps.js';
+export * from './commands/bloat.js';
+export * from './commands/test-map.js';

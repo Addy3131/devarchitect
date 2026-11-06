@@ -126,7 +126,13 @@ devarchitect studio             # Launches high-performance visual studio with i
 devarchitect studio --port 4500 # Custom port (includes Vis.js physics, blast radius glow & in-browser Q&A)
 devarchitect ask "How is checkout architected?" # Deterministic codebase Q&A grounded in AST & graph
 
-# 12. Architecture-Aware Code Scaffolding
+# 12. Everyday Developer Safeguards (Env Secrets, Phantom Packages, Bloat & Tests)
+devarchitect env                 # Audits missing .env.example keys & flags private secret leaks in client UI
+devarchitect deps                # Detects phantom dependencies (missing in package.json) & unused zombie packages
+devarchitect bloat               # Detects heavy barrel import traps (lodash, date-fns) & server modules in UI
+devarchitect test-map            # Maps architectural test coverage gaps & ranks untested files by risk score
+
+# 13. Architecture-Aware Code Scaffolding
 devarchitect generate feature billing       # Scaffolds FSD-compliant feature module
 devarchitect generate component UserAvatar  # Scaffolds component matching project style
 devarchitect generate service payment       # Scaffolds typed service client

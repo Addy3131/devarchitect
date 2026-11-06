@@ -9,3 +9,7 @@ export * from './smells.js';
 export * from './contract-simulator.js';
 export * from './fixer.js';
 export * from './ask.js';
+export * from './env.js';
+export * from './deps.js';
+export * from './bloat.js';
+export * from './test-map.js';
