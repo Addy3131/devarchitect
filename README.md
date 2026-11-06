@@ -70,27 +70,43 @@ npm link
 Now you can run `devarchitect` from any project folder in your terminal:
 
 ```bash
-# Initialize DevArchitect in a project (scaffolds .devarchitect/config.json)
-devarchitect init
+# 1. Project Initialization & Discovery
+devarchitect init               # Scaffolds .devarchitect/config.json with detected preset
+devarchitect analyze            # Runs repository structure analysis
+devarchitect analyze --html     # Generates interactive HTML dashboard
+devarchitect analyze --json     # Exports raw analysis for CI or external tools
 
-# Run repository discovery & structure analysis
-devarchitect analyze
+# 2. Dependency Graph & Visualizations
+devarchitect graph              # Visualizes dependencies in Mermaid format
+devarchitect graph -f dot       # Visualizes in Graphviz DOT format
+devarchitect graph -o graph.mmd # Exports graph to file
 
-# Generate a standalone HTML architecture report
-devarchitect analyze --html
-
-# Inspect categorized components, hooks, services, or routes
+# 3. Transparent Code Health & Diagnostics
+devarchitect health             # Computes 0-100 score across 6 weighted dimensions
+devarchitect doctor             # Diagnoses tsconfig, entry points, and health readiness
+devarchitect inspect            # Inspects components, hooks, services, and modules
 devarchitect inspect --type component
 devarchitect inspect --feature checkout
 
-# Check project health & configuration readiness
-devarchitect doctor
+# 4. Deep Architecture Enforcement & Debt Ratchet
+devarchitect rules              # Lists all architecture policy rules and presets
+devarchitect validate           # Evaluates FSD/Clean Architecture boundaries & cycles
+devarchitect validate --update-baseline # Freezes existing debt so new code is ratcheted
 
-# Calculate dependency blast radius before editing a file
-devarchitect impact src/services/UserService.ts
+# 5. Code Quality, Hotspots & Dead Code
+devarchitect complexity         # AST cyclomatic complexity hotspots & oversized files
+devarchitect deadcode           # Unused exports and orphaned files
+devarchitect duplication        # Duplicate logic blocks and duplicate clusters
+devarchitect impact <path>      # Calculates change blast radius & dependents
 
-# Validate against architectural rules (enforcing baseline ratchet)
-devarchitect validate
+# 6. Architecture Fingerprint & Drift Detection
+devarchitect fingerprint        # Creates cryptographic structural fingerprint
+devarchitect drift              # Compares against baseline fingerprint to flag drift
+
+# 7. Architecture-Aware Code Scaffolding
+devarchitect generate feature billing       # Scaffolds FSD-compliant feature module
+devarchitect generate component UserAvatar  # Scaffolds component matching project style
+devarchitect generate service payment       # Scaffolds typed service client
 ```
 
 ---
