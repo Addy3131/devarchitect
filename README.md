@@ -58,30 +58,39 @@ pnpm run build
 pnpm run test
 ```
 
-### Using the CLI
+### Using the CLI Globally
+
+To make the `devarchitect` command available anywhere on your machine:
+
+```powershell
+cd apps/cli
+npm link
+```
+
+Now you can run `devarchitect` from any project folder in your terminal:
 
 ```bash
 # Initialize DevArchitect in a project (scaffolds .devarchitect/config.json)
-pnpm cli init
+devarchitect init
 
 # Run repository discovery & structure analysis
-pnpm cli analyze
+devarchitect analyze
 
 # Generate a standalone HTML architecture report
-pnpm cli analyze --html
+devarchitect analyze --html
 
 # Inspect categorized components, hooks, services, or routes
-pnpm cli inspect --type component
-pnpm cli inspect --feature checkout
+devarchitect inspect --type component
+devarchitect inspect --feature checkout
 
 # Check project health & configuration readiness
-pnpm cli doctor
+devarchitect doctor
 
 # Calculate dependency blast radius before editing a file
-pnpm cli impact src/services/UserService.ts
+devarchitect impact src/services/UserService.ts
 
 # Validate against architectural rules (enforcing baseline ratchet)
-pnpm cli validate
+devarchitect validate
 ```
 
 ---
